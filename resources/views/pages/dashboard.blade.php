@@ -33,9 +33,9 @@
 
             <form method="GET" action="/">
                 <input type="date"
-                       name="date"
-                       value="{{ $date ?? now()->toDateString() }}"
-                       class="border rounded px-3 py-2 w-full">
+                    name="date"
+                    value="{{ $date ?? now()->toDateString() }}"
+                    class="border rounded px-3 py-2 w-full">
             </form>
         </div>
 
