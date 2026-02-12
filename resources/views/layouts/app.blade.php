@@ -22,6 +22,10 @@
     {{-- Footer --}}
     @include('components.footer')
 
+    <div id="calendar"
+        data-date="{{ $date ?? now()->toDateString() }}">
+    </div>
+
 </body>
 
 <script>
@@ -29,8 +33,7 @@
 
         var calendarEl = document.getElementById('calendar');
 
-        // サンプルとして2026-02-20を選択状態にする。後程動的に変更可能にする。
-        var selectedDate = "2026-02-20";
+        var selectedDate = @json($date);
 
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
@@ -48,24 +51,13 @@
             },
 
             events: [{
-                    title: 'テスト予定',
-                    start: selectedDate
-                },
-                {
-                    title: '別の日予定',
-                    start: '2026-02-25'
-                },
-                {
-                    start: selectedDate,
-                    display: 'background'
-                }
-            ]
+                start: selectedDate,
+                display: 'background'
+            }]
         });
 
         calendar.render();
     });
 </script>
-
-
 
 </html>

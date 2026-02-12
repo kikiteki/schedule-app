@@ -21,18 +21,61 @@
         </div>
         @endif
 
-        <div class="bg-white p-6 rounded-lg shadow">
-            <h2 class="text-lg font-semibold mb-4">予定一覧</h2>
-            <p class="text-sm text-gray-500 mb-4">
-                表示中の日付：{{ $date ?? now()->toDateString() }}
-            </p>
+        <div class="bg-white p-6 rounded-xl shadow">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-bold">予定一覧</h2>
+                <span class="text-sm text-gray-500">
+                    {{ $date ?? now()->toDateString() }}
+                </span>
+            </div>
 
-            <ul class="space-y-2">
-                <li class="p-3 bg-gray-50 rounded border">
-                    サンプル予定
+            @if ($schedules->isEmpty())
+            <div class="p-6 bg-gray-50 text-gray-400 rounded-lg border text-sm text-center">
+                予定はありません
+            </div>
+            @else
+            <ul class="space-y-4">
+                @foreach ($schedules as $schedule)
+                <li class="p-5 bg-white border rounded-xl shadow-sm hover:shadow-md transition">
+                    <div class="flex justify-between items-start">
+
+                        {{-- 左側：メイン情報 --}}
+                        <div class="space-y-2">
+                            <div class="text-base font-semibold">
+                                {{ $schedule->title }}
+                            </div>
+
+                            <div class="flex items-center text-sm text-gray-500 space-x-2">
+                                <span>
+                                    {{ \Carbon\Carbon::parse($schedule->start_at)->format('H:i') }}
+                                    @if ($schedule->end_at)
+                                    〜 {{ \Carbon\Carbon::parse($schedule->end_at)->format('H:i') }}
+                                    @endif
+                                </span>
+                            </div>
+                        </div>
+
+                        {{-- 右側：状態エリア --}}
+                        <div class="flex flex-col items-end space-y-2">
+                            <span class="text-xs px-3 py-1 bg-blue-100 text-blue-700 rounded-full">
+                                {{ $schedule->category->name ?? '未分類' }}
+                            </span>
+
+                            @if ($schedule->is_completed)
+                            <span class="text-xs px-3 py-1 bg-green-100 text-green-700 rounded-full">
+                                完了
+                            </span>
+                            @endif
+                        </div>
+
+                    </div>
                 </li>
+                @endforeach
             </ul>
+            @endif
         </div>
+
+
 
         <div class="bg-white p-6 rounded-lg shadow">
             <h2 class="text-lg font-semibold mb-4">予定を追加</h2>
@@ -102,7 +145,6 @@
                 </div>
             </form>
         </div>
-
 
     </div>
 
