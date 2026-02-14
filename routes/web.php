@@ -11,21 +11,13 @@ Route::middleware('auth')->group(function () {
     // TopPage
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-    // schedule関連のルート
-    Route::get('/schedules/{id}', [ScheduleController::class, 'show'])
-        ->name('schedules.show');
-
-    Route::post('/schedules', [ScheduleController::class, 'store'])
-        ->name('schedules.store');
-
-    Route::post('/schedules/{id}/update', [ScheduleController::class, 'update'])
-        ->name('schedules.update');
-
-    Route::post('/schedules/{id}/complete', [ScheduleController::class, 'complete'])
-        ->name('schedules.complete');
-
-    Route::post('/schedules/{id}/delete', [ScheduleController::class, 'delete'])
-        ->name('schedules.delete');
+    // schedule関連
+    Route::get('/schedules', [ScheduleController::class, 'index'])->name('schedules.index');       // 一覧
+    Route::get('/schedules/{id}', [ScheduleController::class, 'show'])->name('schedules.show');     // 詳細
+    Route::post('/schedules', [ScheduleController::class, 'store'])->name('schedules.store');       // 新規作成
+    Route::patch('/schedules/{id}', [ScheduleController::class, 'update'])->name('schedules.update');   // 更新
+    Route::patch('/schedules/{id}/complete', [ScheduleController::class, 'complete'])->name('schedules.complete'); // 完了
+    Route::delete('/schedules/{id}', [ScheduleController::class, 'destroy'])->name('schedules.destroy');      // 削除
 
     // ユーザープロフィール編集用のルート 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
