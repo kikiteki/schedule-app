@@ -28,36 +28,4 @@
 
 </body>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-
-        var calendarEl = document.getElementById('calendar');
-
-        var selectedDate = @json($date);
-
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            initialDate: selectedDate,
-            locale: 'ja',
-            height: 400,
-            headerToolbar: {
-                left: 'prev,next',
-                center: 'title',
-                right: ''
-            },
-
-            dateClick: function(info) {
-                window.location.href = '/?date=' + info.dateStr;
-            },
-
-            events: [{
-                start: selectedDate,
-                display: 'background'
-            }]
-        });
-
-        calendar.render();
-    });
-</script>
-
 </html>
