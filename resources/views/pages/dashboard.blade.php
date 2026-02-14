@@ -36,46 +36,58 @@
             @else
             <ul class="space-y-4">
                 @foreach ($schedules as $schedule)
-                <li class="p-5 bg-white border rounded-xl shadow-sm hover:shadow-md transition">
-                    <div class="flex justify-between items-start">
+                <li class="
+            p-5 border rounded-xl shadow-sm transition
+            {{ $schedule->is_completed
+                ? 'bg-gray-100 text-gray-400'
+                : 'bg-white hover:shadow-md' }}
+        ">
 
-                        {{-- 左側：メイン情報 --}}
-                        <div class="space-y-2">
-                            <div class="text-base font-semibold">
-                                {{ $schedule->title }}
+                    <a href="{{ route('schedules.show', $schedule->id) }}"
+                        class="block p-5 bg-white border rounded-xl shadow-sm hover:shadow-md transition">
+
+                        <div class="flex justify-between items-start">
+
+                            {{-- 左側：メイン情報 --}}
+                            <div class="space-y-2">
+                                <div class="text-base font-semibold">
+                                    {{ $schedule->title }}
+                                </div>
+
+                                <div class="flex items-center text-sm text-gray-500 space-x-2">
+                                    <span>
+                                        {{ \Carbon\Carbon::parse($schedule->start_at)->format('H:i') }}
+                                        @if ($schedule->end_at)
+                                        〜 {{ \Carbon\Carbon::parse($schedule->end_at)->format('H:i') }}
+                                        @endif
+                                    </span>
+                                </div>
                             </div>
 
-                            <div class="flex items-center text-sm text-gray-500 space-x-2">
-                                <span>
-                                    {{ \Carbon\Carbon::parse($schedule->start_at)->format('H:i') }}
-                                    @if ($schedule->end_at)
-                                    〜 {{ \Carbon\Carbon::parse($schedule->end_at)->format('H:i') }}
-                                    @endif
+                            {{-- 右側：状態エリア --}}
+                            <div class="flex flex-col items-end space-y-2">
+
+                                <span class="text-xs px-3 py-1 rounded-full
+                            {{ $schedule->is_completed
+                                ? 'bg-gray-200 text-gray-500'
+                                : 'bg-blue-100 text-blue-700' }}">
+                                    {{ $schedule->category->name ?? '未分類' }}
                                 </span>
+
+                                @if ($schedule->is_completed)
+                                <span class="text-xs px-3 py-1 bg-green-100 text-green-700 rounded-full">
+                                    完了
+                                </span>
+                                @endif
                             </div>
+
                         </div>
-
-                        {{-- 右側：状態エリア --}}
-                        <div class="flex flex-col items-end space-y-2">
-                            <span class="text-xs px-3 py-1 bg-blue-100 text-blue-700 rounded-full">
-                                {{ $schedule->category->name ?? '未分類' }}
-                            </span>
-
-                            @if ($schedule->is_completed)
-                            <span class="text-xs px-3 py-1 bg-green-100 text-green-700 rounded-full">
-                                完了
-                            </span>
-                            @endif
-                        </div>
-
-                    </div>
+                    </a>
                 </li>
                 @endforeach
             </ul>
             @endif
         </div>
-
-
 
         <div class="bg-white p-6 rounded-lg shadow">
             <h2 class="text-lg font-semibold mb-4">予定を追加</h2>
@@ -149,5 +161,37 @@
     </div>
 
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        var calendarEl = document.getElementById('calendar');
+
+        var selectedDate = @json($date);
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            initialDate: selectedDate,
+            locale: 'ja',
+            height: 400,
+            headerToolbar: {
+                left: 'prev,next',
+                center: 'title',
+                right: ''
+            },
+
+            dateClick: function(info) {
+                window.location.href = '/?date=' + info.dateStr;
+            },
+
+            events: [{
+                start: selectedDate,
+                display: 'background'
+            }]
+        });
+
+        calendar.render();
+    });
+</script>
 
 @endsection
