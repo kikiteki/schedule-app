@@ -66,7 +66,7 @@ class ScheduleController extends Controller
         return back();
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
         $schedule = Schedule::where('id', $id)
             ->where('user_id', Auth::id())
@@ -76,4 +76,5 @@ class ScheduleController extends Controller
 
         return redirect()->route('dashboard');
     }
+
 }

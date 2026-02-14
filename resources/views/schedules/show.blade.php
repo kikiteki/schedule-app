@@ -5,7 +5,7 @@
 
     <form method="POST" action="{{ route('schedules.update', $schedule->id) }}">
         @csrf
-
+        @method('PATCH')
         <div class="space-y-4">
 
             <input type="text"
@@ -48,6 +48,7 @@
         action="{{ route('schedules.complete', $schedule->id) }}"
         class="mt-4">
         @csrf
+        @method('PATCH')
         <button class="px-4 py-2 bg-green-600 text-white rounded">
             完了にする
         </button>
@@ -56,10 +57,11 @@
 
     {{-- 削除 --}}
     <form method="POST"
-        action="{{ route('schedules.delete', $schedule->id) }}"
+        action="{{ route('schedules.destroy', $schedule->id) }}"
         onsubmit="return confirm('削除しますか？');"
         class="mt-4">
         @csrf
+        @method('DELETE')
         <button class="px-4 py-2 bg-red-600 text-white rounded">
             削除
         </button>
